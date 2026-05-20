@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fieldday — Find Your Game</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --primary:     #0081A7;
+    --primary-lt:  #00AFB9;
+    --accent:      #F9C74F;
+    --danger:      #FF6F59;
+    --bg-deep:     #003566;
+    --bg-card:     #004480;
+    --bg-elevated: #005090;
+    --text:        #FFFFFF;
+    --text-sec:    #90C4D4;
+    --text-muted:  #5A8FA0;
+    --border:      rgba(0,129,167,0.2);
+    --border-lt:   rgba(0,129,167,0.33);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg-deep);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 2.5rem;
+    background: rgba(0,53,102,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.75rem;
+    letter-spacing: 0.05em;
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .nav-cta {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--bg-deep);
+    background: var(--accent);
+    padding: 0.5rem 1.25rem;
+    border-radius: 100px;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .nav-cta:hover { opacity: 0.85; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 7rem 2.5rem 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -10%;
+    right: -5%;
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, rgba(0,175,185,0.12) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 5%;
+    left: -10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(0,129,167,0.08) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+  }
+
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 12vw, 9rem);
+    line-height: 0.92;
+    letter-spacing: 0.02em;
+    max-width: 14ch;
+    margin-bottom: 2rem;
+  }
+
+  .hero h1 span { color: var(--accent); }
+
+  .hero p {
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    font-weight: 300;
+    color: var(--text-sec);
+    max-width: 42ch;
+    line-height: 1.7;
+    margin-bottom: 3rem;
+  }
+
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--bg-deep);
+    background: var(--accent);
+    padding: 0.85rem 2rem;
+    border-radius: 100px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.15s;
+  }
+  .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+
+  .btn-ghost {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border-lt);
+    padding-bottom: 2px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .btn-ghost:hover { color: var(--text); border-color: var(--primary-lt); }
+
+  /* MARQUEE */
+  .marquee-wrap {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 0;
+    overflow: hidden;
+    white-space: nowrap;
+    background: var(--bg-card);
+  }
+
+  .marquee-inner {
+    display: inline-block;
+    animation: marquee 22s linear infinite;
+  }
+
+  .marquee-inner span {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+    padding: 0 2.5rem;
+  }
+
+  .marquee-inner span.accent { color: var(--accent); }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* HOW IT WORKS */
+  .section {
+    padding: 7rem 2.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+
+  .section h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 1;
+    margin-bottom: 4rem;
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .step {
+    background: var(--bg-deep);
+    padding: 2.5rem 2rem;
+    transition: background 0.2s;
+  }
+  .step:hover { background: var(--bg-card); }
+
+  .step-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    color: rgba(0,175,185,0.25);
+    line-height: 1;
+    margin-bottom: 1.25rem;
+  }
+
+  .step h3 {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+  }
+
+  .step p {
+    font-size: 0.9rem;
+    color: var(--text-sec);
+    line-height: 1.7;
+  }
+
+  /* CTA */
+  .cta-section {
+    background: var(--bg-card);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 7rem 2.5rem;
+    text-align: center;
+  }
+
+  .cta-section h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 7vw, 5rem);
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  .cta-section h2 span { color: var(--accent); }
+
+  .cta-section p {
+    font-size: 1rem;
+    color: var(--text-sec);
+    margin-bottom: 2.5rem;
+  }
+
+  .email-form {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .email-form input {
+    flex: 1;
+    min-width: 220px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    padding: 0.85rem 1.25rem;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-lt);
+    border-radius: 100px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .email-form input::placeholder { color: var(--text-muted); }
+  .email-form input:focus { border-color: var(--primary-lt); }
+
+  .success-msg {
+    display: none;
+    font-size: 0.9rem;
+    color: var(--accent);
+    margin-top: 1rem;
+  }
+
+  footer {
+    padding: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    border-top: 1px solid var(--border);
+  }
+
+  footer .logo { font-size: 1.25rem; }
+  footer p { font-size: 0.8rem; color: var(--text-muted); }
+
+  /* STRIPE RETURN */
+  .stripe-return {
+    display: none;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    flex-direction: column;
+  }
+
+  .stripe-return.active { display: flex; }
+
+  .stripe-return .icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: rgba(249,199,79,0.1);
+    border: 1px solid rgba(249,199,79,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 2rem;
+    font-size: 2rem;
+  }
+
+  .stripe-return h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .stripe-return p {
+    color: var(--text-sec);
+    max-width: 36ch;
+    margin: 0 auto 2rem;
+    line-height: 1.7;
+  }
+
+  @media (max-width: 600px) {
+    nav { padding: 1rem 1.25rem; }
+    .hero { padding: 6rem 1.25rem 4rem; }
+    .section { padding: 5rem 1.25rem; }
+    .cta-section { padding: 5rem 1.25rem; }
+    footer { padding: 2rem 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="/">Fieldday</a>
+  <a class="nav-cta" href="#notify">Get Early Access</a>
+</nav>
+
+<div class="stripe-return" id="stripe-return">
+  <div class="icon">✓</div>
+  <h1>You're all set.</h1>
+  <p id="stripe-return-msg">Your Stripe account is connected. Head back to Fieldday to finish setting up your league.</p>
+  <a class="btn-primary" href="fieldday://stripe/return">Open Fieldday</a>
+</div>
+
+<main id="main-content">
+
+  <section class="hero">
+    <p class="hero-eyebrow">Austin, TX — Coming Soon</p>
+    <h1>Find your <span>game.</span></h1>
+    <p>Pickup sports, local leagues, and the people who play them — all in one place.</p>
+    <div class="hero-actions">
+      <a class="btn-primary" href="#notify">Get Early Access</a>
+      <a class="btn-ghost" href="#how">How it works</a>
+    </div>
+  </section>
+
+  <div class="marquee-wrap">
+    <div class="marquee-inner">
+      <span>Flag Football</span><span class="accent">·</span>
+      <span>Sand Volleyball</span><span class="accent">·</span>
+      <span>Softball</span><span class="accent">·</span>
+      <span>Basketball</span><span class="accent">·</span>
+      <span>Soccer</span><span class="accent">·</span>
+      <span>Tennis</span><span class="accent">·</span>
+      <span>Pickleball</span><span class="accent">·</span>
+      <span>Flag Football</span><span class="accent">·</span>
+      <span>Sand Volleyball</span><span class="accent">·</span>
+      <span>Softball</span><span class="accent">·</span>
+      <span>Basketball</span><span class="accent">·</span>
+      <span>Soccer</span><span class="accent">·</span>
+      <span>Tennis</span><span class="accent">·</span>
+      <span>Pickleball</span><span class="accent">·</span>
+    </div>
+  </div>
+
+  <section class="section" id="how">
+    <p class="section-label">How it works</p>
+    <h2>From zero to game day</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h3>Find a game nearby</h3>
+        <p>Browse pickup games happening around you — filter by sport, time, and skill level.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h3>Join or create</h3>
+        <p>Join an open game in one tap, or create your own and fill the roster automatically.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h3>Play your season</h3>
+        <p>Clubs, leagues, schedules, and stats — everything your team needs to stay organized.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section" id="notify">
+    <p class="section-label">Austin Launch</p>
+    <h2>Be first <span>on the field.</span></h2>
+    <p>We're launching in Austin soon. Drop your email and we'll let you know when it's live.</p>
+    <div class="email-form">
+      <input type="email" id="email-input" placeholder="your@email.com" />
+      <button class="btn-primary" onclick="handleSubmit()">Notify me</button>
+    </div>
+    <p class="success-msg" id="success-msg">You're on the list. See you on the field.</p>
+  </section>
+
+</main>
+
+<footer>
+  <a class="logo" href="/">Fieldday</a>
+  <p>© 2026 Fieldday. Austin, TX.</p>
+</footer>
+
+<script>
+  (function() {
+    const path = window.location.pathname;
+    if (path === '/stripe/return' || path === '/stripe/refresh') {
+      document.getElementById('main-content').style.display = 'none';
+      document.querySelector('nav').style.display = 'none';
+      document.querySelector('footer').style.display = 'none';
+      const el = document.getElementById('stripe-return');
+      if (path === '/stripe/refresh') {
+        document.getElementById('stripe-return-msg').textContent =
+          'Something interrupted your onboarding. Tap below to continue where you left off.';
+        el.querySelector('h1').textContent = "Let's finish up.";
+        el.querySelector('a').href = 'fieldday://stripe/refresh';
+      }
+      el.classList.add('active');
+    }
+  })();
+
+  function handleSubmit() {
+    const email = document.getElementById('email-input').value.trim();
+    if (!email || !email.includes('@')) return;
+    document.getElementById('success-msg').style.display = 'block';
+    document.getElementById('email-input').value = '';
+  }
+</script>
+
+</body>
+</html>
