@@ -1,0 +1,10 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.fourfeetdeep.fieldday",
+    "sha256_cert_fingerprints": [
+      "AF:A6:18:7C:56:E1:D4:5A:47:AF:6D:22:08:8B:51:C3:C7:3E:DB:BD:6B:92:0E:A6:B6:20:CD:7A:8D:D3:E9:39"
+    ]
+  }
+}]
