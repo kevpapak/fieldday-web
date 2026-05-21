@@ -459,9 +459,9 @@
 <script>
   (function() {
     const path = window.location.pathname ||
-        ('/' + (new URLSearchParams(window.location.search).get('path') || ''));
-    if (path === '/stripe/return' || path.includes('stripe/return') ||
-        path === '/stripe/refresh' || path.includes('stripe/refresh')) {
+        sessionStorage.getItem('stripePath') || '';
+    sessionStorage.removeItem('stripePath');
+    if (path.includes('stripe/return') || path.includes('stripe/refresh')) {
       document.getElementById('main-content').style.display = 'none';
       document.querySelector('nav').style.display = 'none';
       document.querySelector('footer').style.display = 'none';
