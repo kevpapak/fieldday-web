@@ -2,8 +2,8 @@
 <html>
 <head>
   <script>
-    sessionStorage.setItem('stripePath', window.location.pathname);
-    window.location.replace('/');
+    var p = window.location.pathname;
+    window.location.replace('/#' + p);
   </script>
 </head>
 </html>

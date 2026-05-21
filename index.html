@@ -458,9 +458,7 @@
 
 <script>
   (function() {
-    const path = window.location.pathname ||
-        sessionStorage.getItem('stripePath') || '';
-    sessionStorage.removeItem('stripePath');
+    const path = window.location.pathname + window.location.hash.replace('#', '');
     if (path.includes('stripe/return') || path.includes('stripe/refresh')) {
       document.getElementById('main-content').style.display = 'none';
       document.querySelector('nav').style.display = 'none';
