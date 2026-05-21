@@ -458,13 +458,15 @@
 
 <script>
   (function() {
-    const path = window.location.pathname;
-    if (path === '/stripe/return' || path === '/stripe/refresh') {
+    const path = window.location.pathname ||
+        ('/' + (new URLSearchParams(window.location.search).get('path') || ''));
+    if (path === '/stripe/return' || path.includes('stripe/return') ||
+        path === '/stripe/refresh' || path.includes('stripe/refresh')) {
       document.getElementById('main-content').style.display = 'none';
       document.querySelector('nav').style.display = 'none';
       document.querySelector('footer').style.display = 'none';
       const el = document.getElementById('stripe-return');
-      if (path === '/stripe/refresh') {
+      if (path.includes('refresh')) {
         document.getElementById('stripe-return-msg').textContent =
           'Something interrupted your onboarding. Tap below to continue where you left off.';
         el.querySelector('h1').textContent = "Let's finish up.";
